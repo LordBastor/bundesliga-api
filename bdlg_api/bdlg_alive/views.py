@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from bdlg_main.open_league_wrapper import OpenLeagueWrapper
+
 
 class AliveView(APIView):
     """
@@ -10,4 +12,6 @@ class AliveView(APIView):
     """
     
     def get(self, request):
+        open_league = OpenLeagueWrapper()
+        open_league.get_all_teams()
         return Response({'alive': True}, status=status.HTTP_200_OK)

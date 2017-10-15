@@ -24,6 +24,21 @@ class OpenLeagueWrapper:
         request_url = self.api_url + 'getmatchdata/bl1'
         return self.get_request(request_url)
     
+    def get_all_teams(self):
+        request_url = self.api_url + 'getavailableteams/bl1/2016'
+        response = self.get_request(request_url)
+        
+        teams = []
+        
+        for team in response:
+            teams.append({
+                'id': team['TeamId'],
+                'name': team['TeamName'],
+                'team_icon': team['TeamIconUrl'],
+            })
+        
+        return teams
+    
     def get_win_loss(self):
         pass
     
