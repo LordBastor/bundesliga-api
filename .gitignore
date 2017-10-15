@@ -1,0 +1,6 @@
+env
+*.pyc
+*.idea
+*.sqlite3
+*.paw
+*.env
