@@ -14,4 +14,9 @@
 
 ## Run commands (localhost)
 * Debug: env $(cat ../debug.env | xargs) python manage.py runserver 0.0.0.0:8000
-* Prod: env $(cat ../prod.env | xargs) python manage.py runserver 0.0.0.0:8000
+* Prod: env $(cat prod-deploy-dir/prod.env | xargs) python manage.py runserver 0.0.0.0:8000
+
+## Deployment
+* make build
+* make push
+* fab deploy:dev

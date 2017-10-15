@@ -1,0 +1,54 @@
+nginx-public:
+  build: ./nginx/
+  restart: always
+  ports:
+    - "80:80"
+  links:
+    - "django-api-1:django-api-1"
+    - "django-api-2:django-api-2"
+    - "django-api-3:django-api-3"
+    - "django-web:django-web"
+
+django-api-1:
+  image: bastor/bundesliga-api
+  restart: always
+  env_file: ./debug.env
+  environment:
+    DEBUG: 'false'
+    USE_CMS: 'false'
+  ports:
+    - "8000"
+
+django-api-2:
+  image: bastor/bundesliga-api
+  restart: always
+  env_file: ./debug.env
+  environment:
+    DEBUG: 'false'
+    USE_CMS: 'false'
+  ports:
+    - "8000"
+  links:
+    - "redis:redis"
+
+django-api-3:
+  image: bastor/bundesliga-api
+  restart: always
+  env_file: ./debug.env
+  environment:
+    DEBUG: 'false'
+    USE_CMS: 'false'
+  ports:
+    - "8000"
+  links:
+    - "redis:redis"
+
+django-web:
+  image: bastor/bundesliga-api
+  restart: always
+  env_file: ./debug.env
+  environment:
+    DEBUG: 'false'
+    USE_CMS: 'true'
+  ports:
+    - "8000"
