@@ -13,5 +13,5 @@ class AliveView(APIView):
     
     def get(self, request):
         open_league = OpenLeagueWrapper()
-        open_league.get_all_teams()
+        open_league.get_win_loss()
         return Response({'alive': True}, status=status.HTTP_200_OK)
