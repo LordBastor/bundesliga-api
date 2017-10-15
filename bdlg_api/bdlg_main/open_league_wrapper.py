@@ -8,6 +8,10 @@ class OpenLeagueWrapper:
         api: https://www.openligadb.de/
     """
     
+    LEAGUE_1 = 'bl1'
+    LEAGUE_2 = 'bl2'
+    LEAGUE_3 = 'bl3'
+    
     def __init__(self):
         self.headers = {'content-type': 'application/json'}
         self.api_url = 'https://www.openligadb.de/api/'
@@ -16,16 +20,16 @@ class OpenLeagueWrapper:
         response = requests.get(url, headers=self.headers)
         return response.json()
     
-    def get_upcoming_matches(self):
-        request_url = self.api_url + 'getmatchdata/bl1'
+    def get_upcoming_matches(self, league=LEAGUE_1, season='2017'):
+        request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
         return self.get_request(request_url)
     
-    def get_all_matches(self):
-        request_url = self.api_url + 'getmatchdata/bl1'
+    def get_all_matches(self, league=LEAGUE_1, season='2017'):
+        request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
         return self.get_request(request_url)
     
-    def get_all_teams(self):
-        request_url = self.api_url + 'getavailableteams/bl1/2017'
+    def get_all_teams(self, league=LEAGUE_1, season='2017'):
+        request_url = self.api_url + 'getavailableteams/{}/{}'.format(league, season)
         response = self.get_request(request_url)
         
         teams = []
@@ -85,15 +89,25 @@ class OpenLeagueWrapper:
                 
                 team_2['draws'] += 1
                 team_2['points'] += 1
+        
+        # Order by points and remove helper index - it's just getting in the way now
+        win_loss_teams = sorted(
+            [value for key, value in win_loss_teams.iteritems()],
+            key=lambda k: k['points'],
+            reverse=True
+        )
+        
         for team in win_loss_teams:
             print(u'Team: {} Wins: {}, Losses: {}, Draws: {}, Points: {} \n'.format(
-                    win_loss_teams[team]['name'],
-                    win_loss_teams[team]['wins'],
-                    win_loss_teams[team]['losses'],
-                    win_loss_teams[team]['draws'],
-                    win_loss_teams[team]['points'],
+                    team['name'],
+                    team['wins'],
+                    team['losses'],
+                    team['draws'],
+                    team['points'],
                 )
             )
+        
+        return win_loss_teams
     
     def get_separate_team(self):
         pass
