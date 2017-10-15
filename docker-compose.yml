@@ -28,8 +28,6 @@ django-api-2:
     USE_CMS: 'false'
   ports:
     - "8000"
-  links:
-    - "redis:redis"
 
 django-api-3:
   image: bastor/bundesliga-api
@@ -40,8 +38,6 @@ django-api-3:
     USE_CMS: 'false'
   ports:
     - "8000"
-  links:
-    - "redis:redis"
 
 django-web:
   image: bastor/bundesliga-api
