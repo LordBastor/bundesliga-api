@@ -12,8 +12,12 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_PATH = BASE_DIR[0]
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,6 +33,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '0.0.0.0',
+    'ec2-52-221-179-22.ap-southeast-1.compute.amazonaws.com',
 ]
 
 
@@ -39,8 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.messages',
     'rest_framework',
     'rest_framework_swagger',
     'django.contrib.sites',
@@ -152,6 +157,7 @@ CHARSET = 'UTF-8'
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
 SWAGGER_SETTINGS = {
     'is_authenticated': False,

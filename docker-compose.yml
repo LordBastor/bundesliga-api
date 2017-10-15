@@ -8,43 +8,53 @@ nginx-public:
     - "django-api-2:django-api-2"
     - "django-api-3:django-api-3"
     - "django-web:django-web"
+  volumes:
+    - /static:/static
 
 django-api-1:
   image: bastor/bundesliga-api
   restart: always
   env_file: ./debug.env
   environment:
-    DEBUG: 'false'
+    DEBUG: 'true'
     USE_CMS: 'false'
   ports:
     - "8000"
+  volumes:
+    - /static:/static
 
 django-api-2:
   image: bastor/bundesliga-api
   restart: always
   env_file: ./debug.env
   environment:
-    DEBUG: 'false'
+    DEBUG: 'true'
     USE_CMS: 'false'
   ports:
     - "8000"
+  volumes:
+    - /static:/static
 
 django-api-3:
   image: bastor/bundesliga-api
   restart: always
   env_file: ./debug.env
   environment:
-    DEBUG: 'false'
+    DEBUG: 'true'
     USE_CMS: 'false'
   ports:
     - "8000"
+  volumes:
+    - /static:/static
 
 django-web:
   image: bastor/bundesliga-api
   restart: always
   env_file: ./debug.env
   environment:
-    DEBUG: 'false'
+    DEBUG: 'true'
     USE_CMS: 'true'
   ports:
     - "8000"
+  volumes:
+    - /static:/static

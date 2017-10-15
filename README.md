@@ -20,3 +20,4 @@
 * make build
 * make push
 * fab deploy:dev
+* make run_dev/run_prod to run locally
