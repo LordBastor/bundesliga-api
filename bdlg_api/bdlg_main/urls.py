@@ -22,6 +22,7 @@ schema_view = get_swagger_view(title='BDLG API')
 
 urlpatterns = [
     url(r'^v1/', include('bdlg_alive.urls')),
+    url(r'^v1/', include('bdlg_scores.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^docs/', schema_view),
 ]

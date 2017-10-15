@@ -4,5 +4,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class BdlgAliveConfig(AppConfig):
-    name = 'bdlg_alive'
+class BdlgScoresConfig(AppConfig):
+    name = 'bdlg_scores'

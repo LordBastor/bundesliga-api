@@ -28,6 +28,47 @@ class OpenLeagueWrapper:
         request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
         return self.get_data(request_url)
     
+    def digest_matches(self, matches):
+        digested_matches = []
+        
+        for match in matches:
+            team_1_id   = match['Team1']['TeamId']
+            team_1_name = match['Team1']['TeamName']
+            team_1_icon = match['Team1']['TeamIconUrl']
+            
+            team_2_id   = match['Team2']['TeamId']
+            team_2_name = match['Team2']['TeamName']
+            team_2_icon = match['Team2']['TeamIconUrl']
+            
+            finished = match['MatchIsFinished']
+            datetime = match['MatchDateTimeUTC']
+            
+            team_1_score = None
+            team_2_score = None
+            
+            if 'MatchResults' in match and len(match['MatchResults']) > 0:
+                team_1_score = match['MatchResults'][-1]['PointsTeam1']
+                team_2_score = match['MatchResults'][-1]['PointsTeam2']
+            
+            team_matches.append({
+                'finished': finished,
+                'datetime': datetime,
+                'team_1': {
+                    'id': team_1_id,
+                    'name': team_1_name,
+                    'icon': team_1_icon,
+                    'score': team_1_score,
+                },
+                'team_2': {
+                    'id': team_2_id,
+                    'name': team_2_name,
+                    'icon': team_2_icon,
+                    'score': team_2_score,
+                },
+            })
+        
+        return digested_matches
+    
     def get_all_teams(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getavailableteams/{}/{}'.format(league, season)
         response = self.get_data(request_url)
@@ -99,6 +140,12 @@ class OpenLeagueWrapper:
         )
         
         return win_loss_teams
+    def get_team_score(self, team_id, league=LEAGUE_1, season='2017'):
+        scores = self.get_scores(league=league, season=season)
+        
+        team_score = [team for team in scores if team['id'] == team_id][0]
+        
+        return team_score
     
     def get_team_matches(self, team_id, league=LEAGUE_1, season='2017'):
         all_matches = self.get_all_matches(league=league, season=season)
@@ -107,48 +154,11 @@ class OpenLeagueWrapper:
             if match['Team1']['TeamId'] == 131 or match['Team2']['TeamId'] == 131
         ]
         
-        team_matches = []
+        digested_matches = self.digest_matches(filtered_matches)
         
-        for match in filtered_matches:
-            team_1_id   = match['Team1']['TeamId']
-            team_1_name = match['Team1']['TeamName']
-            team_1_icon = match['Team1']['TeamIconUrl']
-            
-            team_2_id   = match['Team2']['TeamId']
-            team_2_name = match['Team2']['TeamName']
-            team_2_icon = match['Team2']['TeamIconUrl']
-            
-            finished = match['MatchIsFinished']
-            datetime = match['MatchDateTimeUTC']
-            
-            team_1_score = None
-            team_2_score = None
-            
-            if 'MatchResults' in match and len(match['MatchResults']) > 0:
-                team_1_score = match['MatchResults'][-1]['PointsTeam1']
-                team_2_score = match['MatchResults'][-1]['PointsTeam2']
-            
-            team_matches.append({
-                'finished': finished,
-                'datetime': datetime,
-                'team_1': {
-                    'id': team_1_id,
-                    'name': team_1_name,
-                    'icon': team_1_icon,
-                    'score': team_1_score,
-                },
-                'team_2': {
-                    'id': team_2_id,
-                    'name': team_2_name,
-                    'icon': team_2_icon,
-                    'score': team_2_score,
-                },
-            })
-        return team_matches
+        return digested_matches
     
-    def get_team_score(self, team_id, league=LEAGUE_1, season='2017'):
-        scores = self.get_scores(league=league, season=season)
-        
-        team_score = [team for team in scores if team['id'] == team_id][0]
-        
-        return team_score
+    def get_all_matches_digested(self, league=LEAGUE_1, season='2017'):
+        all_matches = self.get_all_matches(league=league, season=season)
+        team_matches = self.digest_matches(all_matches)
+        return digested_matches
