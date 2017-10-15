@@ -16,21 +16,21 @@ class OpenLeagueWrapper:
         self.headers = {'content-type': 'application/json'}
         self.api_url = 'https://www.openligadb.de/api/'
     
-    def get_request(self, url):
+    def get_data(self, url):
         response = requests.get(url, headers=self.headers)
         return response.json()
     
     def get_upcoming_matches(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
-        return self.get_request(request_url)
+        return self.get_data(request_url)
     
     def get_all_matches(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
-        return self.get_request(request_url)
+        return self.get_data(request_url)
     
     def get_all_teams(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getavailableteams/{}/{}'.format(league, season)
-        response = self.get_request(request_url)
+        response = self.get_data(request_url)
         
         teams = []
         
@@ -43,14 +43,15 @@ class OpenLeagueWrapper:
         
         return teams
     
-    def get_win_loss(self):
-        teams = self.get_all_teams()
+    def get_scores(self, league=LEAGUE_1, season='2017'):
+        teams = self.get_all_teams(league=league, season=season)
         
         # Prepare W/L object - should be easy to access team by id
         win_loss_teams = {}
         
         for team in teams:
             win_loss_teams[team['id']] = {
+                'id': team['id'],
                 'name': team['name'],
                 'icon': team['icon'],
                 'wins': 0,
@@ -59,7 +60,7 @@ class OpenLeagueWrapper:
                 'points': 0,
             }
         
-        all_matches = self.get_all_matches()
+        all_matches = self.get_all_matches(league=league, season=season)
         for match in all_matches:
             if not match['MatchIsFinished']:
                 continue
@@ -99,8 +100,8 @@ class OpenLeagueWrapper:
         
         return win_loss_teams
     
-    def get_team_matches(self, team_id):
-        all_matches = self.get_all_matches()
+    def get_team_matches(self, team_id, league=LEAGUE_1, season='2017'):
+        all_matches = self.get_all_matches(league=league, season=season)
         filtered_matches = [
             match for match in all_matches
             if match['Team1']['TeamId'] == 131 or match['Team2']['TeamId'] == 131
@@ -145,5 +146,9 @@ class OpenLeagueWrapper:
             })
         return team_matches
     
-    def get_team_win_loss(self, team_id):
-        pass
+    def get_team_score(self, team_id, league=LEAGUE_1, season='2017'):
+        scores = self.get_scores(league=league, season=season)
+        
+        team_score = [team for team in scores if team['id'] == team_id][0]
+        
+        return team_score

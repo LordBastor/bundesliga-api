@@ -13,7 +13,6 @@ class AliveView(APIView):
     
     def get(self, request):
         open_league = OpenLeagueWrapper()
-        team_matches = open_league.get_team_matches(131)
-        for match in team_matches:
-            print match
+        team_matches = open_league.get_upcoming_matches()
+        print team_matches
         return Response({'alive': True}, status=status.HTTP_200_OK)
