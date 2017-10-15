@@ -27,4 +27,4 @@ RUN echo 'debconf debconf/frontend select Dialog' | debconf-set-selections
 EXPOSE 8000
 
 # Run django server on port 8000 and allow traffic from anywhere
-CMD python /code/django/manage.py runserver 0:8000
+CMD python /code/bdlg_api/manage.py runserver 0:8000
