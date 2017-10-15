@@ -97,17 +97,53 @@ class OpenLeagueWrapper:
             reverse=True
         )
         
-        for team in win_loss_teams:
-            print(u'Team: {} Wins: {}, Losses: {}, Draws: {}, Points: {} \n'.format(
-                    team['name'],
-                    team['wins'],
-                    team['losses'],
-                    team['draws'],
-                    team['points'],
-                )
-            )
-        
         return win_loss_teams
     
-    def get_separate_team(self):
+    def get_team_matches(self, team_id):
+        all_matches = self.get_all_matches()
+        filtered_matches = [
+            match for match in all_matches
+            if match['Team1']['TeamId'] == 131 or match['Team2']['TeamId'] == 131
+        ]
+        
+        team_matches = []
+        
+        for match in filtered_matches:
+            team_1_id   = match['Team1']['TeamId']
+            team_1_name = match['Team1']['TeamName']
+            team_1_icon = match['Team1']['TeamIconUrl']
+            
+            team_2_id   = match['Team2']['TeamId']
+            team_2_name = match['Team2']['TeamName']
+            team_2_icon = match['Team2']['TeamIconUrl']
+            
+            finished = match['MatchIsFinished']
+            datetime = match['MatchDateTimeUTC']
+            
+            team_1_score = None
+            team_2_score = None
+            
+            if 'MatchResults' in match and len(match['MatchResults']) > 0:
+                team_1_score = match['MatchResults'][-1]['PointsTeam1']
+                team_2_score = match['MatchResults'][-1]['PointsTeam2']
+            
+            team_matches.append({
+                'finished': finished,
+                'datetime': datetime,
+                'team_1': {
+                    'id': team_1_id,
+                    'name': team_1_name,
+                    'icon': team_1_icon,
+                    'score': team_1_score,
+                },
+                'team_2': {
+                    'id': team_2_id,
+                    'name': team_2_name,
+                    'icon': team_2_icon,
+                    'score': team_2_score,
+                },
+            })
+        return team_matches
+    
+    def get_team_win_loss(self, team_id):
         pass
