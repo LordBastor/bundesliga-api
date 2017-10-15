@@ -22,7 +22,8 @@ class OpenLeagueWrapper:
     
     def get_upcoming_matches(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
-        return self.get_data(request_url)
+        matches = self.digest_matches(matches)
+        return self.get_data(matches)
     
     def get_all_matches(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
@@ -50,7 +51,7 @@ class OpenLeagueWrapper:
                 team_1_score = match['MatchResults'][-1]['PointsTeam1']
                 team_2_score = match['MatchResults'][-1]['PointsTeam2']
             
-            team_matches.append({
+            digested_matches.append({
                 'finished': finished,
                 'datetime': datetime,
                 'team_1': {
@@ -160,5 +161,5 @@ class OpenLeagueWrapper:
     
     def get_all_matches_digested(self, league=LEAGUE_1, season='2017'):
         all_matches = self.get_all_matches(league=league, season=season)
-        team_matches = self.digest_matches(all_matches)
+        digested_matches = self.digest_matches(all_matches)
         return digested_matches

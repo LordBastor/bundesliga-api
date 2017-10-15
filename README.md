@@ -4,6 +4,9 @@
 * mysql-server / mysql-client
 * apt-get install python-dev libmysqlclient-dev
 
+## Documented endpoints:
+* Can be found at /docs
+
 ## Run
 1. virtualenv env
 2. source env/bin/activate

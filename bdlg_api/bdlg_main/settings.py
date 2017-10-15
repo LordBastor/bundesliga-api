@@ -156,6 +156,7 @@ STATIC_URL = '/static/'
 SWAGGER_SETTINGS = {
     'is_authenticated': False,
     'is_superuser': False,
+    'VALIDATOR_URL': None,
 }
 
 # Django Rest settings
