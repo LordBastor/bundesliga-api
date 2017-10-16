@@ -20,7 +20,7 @@ class UpcomingMatchView(BDLGBaseView):
             
             serializer: MatchSerializer
         """
-        upcoming_matches = self.wrapper.get_all_matches_digested()
+        upcoming_matches = self.wrapper.get_upcoming_matches()
         serializer = MatchSerializer(upcoming_matches, many=True)
         return self.get_mocked_pagination_response(
             data=serializer.data,

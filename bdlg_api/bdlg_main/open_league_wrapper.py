@@ -20,10 +20,10 @@ class OpenLeagueWrapper:
         response = requests.get(url, headers=self.headers)
         return response.json()
     
-    def get_upcoming_matches(self, league=LEAGUE_1, season='2017'):
-        request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
-        matches = self.digest_matches(matches)
-        return self.get_data(matches)
+    def get_upcoming_matches(self, league=LEAGUE_1):
+        request_url = self.api_url + 'getmatchdata/{}'.format(league)
+        matches = self.get_data(request_url)
+        return self.digest_matches(matches)
     
     def get_all_matches(self, league=LEAGUE_1, season='2017'):
         request_url = self.api_url + 'getmatchdata/{}/{}'.format(league, season)
