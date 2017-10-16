@@ -11,6 +11,7 @@ coreschema==0.0.4
 cryptography==2.1.1
 decorator==4.1.2
 Django==1.11.6
+django-cors-headers==2.1.0
 django-querycount==0.7.0
 django-rest-swagger==2.1.2
 djangorestframework==3.7.0

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django.contrib.messages',
+    'corsheaders',
     'rest_framework',
     'rest_framework_swagger',
     'django.contrib.sites',
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -63,6 +65,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'bdlg_main.urls'
+
+# Set to domains that are allowed later one
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
